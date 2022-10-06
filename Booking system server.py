@@ -14,16 +14,20 @@ while True:
     client, address = server.accept() #accept client connection with IP address and client socket
     print(f"Connection from {address} has been established.")
         
+    
     def applyDiscount(price, ticket, name): 
+        
         # apply 10% discount if the total price of tickets exceeds £500
         if price > 500:
             price = price - (price * 0.1) 
             client.send(bytes(name + ", the cost of your " + ticket + " tickets is " + "£" + str(price) + ". " + "You've been given a 10% discount for spending over £500.", "utf-8")) #encoded message returned to user letting them know the cost of their tickets after the discount has been applied
+        
         else: #otherwise, do not apply discount and return to the user the cost of their tickets in an encoded message from the server to client
             client.send(bytes(name + ", the cost of your " + ticket + " tickets is " + "£" + str(price) + ".", "utf-8"))
 
 
     def ticketsQuantity():
+        
         #variables that store quantity of each ticket type which is randomly generated
         saturdayTickets = random.randint(0, 25)
         vipTickets = random.randint(0, 20)
@@ -58,9 +62,12 @@ while True:
 
         if ticketTypeTxt == "SATURDAY" or ticketTypeTxt == "VIP" or ticketTypeTxt == "SUNDAY" or ticketTypeTxt == "WEEKEND":
             #if client inputted saturday
+            
             if ticketTypeTxt == "SATURDAY":
+                
                 if saturdayTickets == 0 or (adultTicketsInt + childTicketsInt) > saturdayTickets: #if client is ordering more tickets than there are availaible
                     client.send(bytes(nameTxt + ", SATURDAY tickets are currently sold out, so you've been put in a waiting list.", "utf-8")) #send to client an encoded message to let them know they're in a waiting list 
+                
                 else: #otherwise calculate cost of ticket prices based on how many tickets the client wants to book
                     adultPrice = adultTicketsInt * 25 #one saturday adult ticket costs £25
                     childPrice = childTicketsInt * 20 #one saturday child ticket costs £20
@@ -68,8 +75,10 @@ while True:
                     applyDiscount(totalPrice, ticketTypeTxt, nameTxt)
         
             elif ticketTypeTxt == "VIP":
+                
                 if vipTickets == 0 or (adultTicketsInt + childTicketsInt) > vipTickets:    
                     client.send(bytes(nameTxt + ", VIP tickets are currently sold out, so you've been put in a waiting list.", "utf-8"))
+                
                 else:
                     adultPrice = adultTicketsInt * 50
                     childPrice = childTicketsInt * 25
@@ -77,8 +86,10 @@ while True:
                     applyDiscount(totalPrice, ticketTypeTxt, nameTxt)
 
             elif ticketTypeTxt == "SUNDAY":
+                
                 if sundayTickets == 0 or (adultTicketsInt + childTicketsInt) > sundayTickets:    
                     client.send(bytes(nameTxt + ", SUNDAY tickets are currently sold out, so you've been put in a waiting list.", "utf-8"))
+                
                 else:
                     adultPrice = adultTicketsInt * 10
                     childPrice = childTicketsInt * 7.5
@@ -86,8 +97,10 @@ while True:
                     applyDiscount(totalPrice, ticketTypeTxt, nameTxt) 
 
             elif ticketTypeTxt == "WEEKEND":
+                
                 if weekendTickets == 0 or (adultTicketsInt + childTicketsInt) > weekendTickets:    
                     client.send(bytes(nameTxt + ", WEEKEND tickets are currently sold out, so you've been put in a waiting list.", "utf-8"))
+                
                 else:
                     adultPrice = adultTicketsInt * 30
                     childPrice = childTicketsInt * 22
@@ -100,8 +113,8 @@ while True:
         return totalPrice    
 
 
-    
     def additionalActivitiesInput():
+    
     ## server recieving (and decoding) client messages regarding additional activities' ticket info ##
 
         bakingAdultTicketsEncoded = client.recv(1024) #server recieves enconded data from client, 1024 refers to the bytes of data the server receives
@@ -135,8 +148,8 @@ while True:
         return bakingAdultTicketsInt, bakingChildTicketsInt, dancingAdultTicketsInt, dancingChildTicketsInt, craftAdultTicketsInt, craftChildTicketsInt, discoAdultTicketsInt, discoChildTicketsInt
 
 
-    
     def calculatePrice():
+    
     ## server calculates total price of additional activities' tickets that the user requested ##
 
         bakingAdultTicketsInt, bakingChildTicketsInt, dancingAdultTicketsInt, dancingChildTicketsInt, craftAdultTicketsInt, craftChildTicketsInt, discoAdultTicketsInt, discoChildTicketsInt = additionalActivitiesInput()
@@ -171,6 +184,5 @@ while True:
     userInputEvaluation()
     additionalActivitiesInput()
     calculatePrice()
-    
     
     client.close() #client closes connection
