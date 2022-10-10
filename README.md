@@ -1,2 +1,4 @@
 # TCP-booking-system
-A festival booking system implemented using TCP/IP sockets in Python.
+The program runs a festival booking system with the goal of taking user information such as name, type of tickets they want to buy and quantity, then returning appropriate information such as the total cost of the ticket(s), whether or not the user is eligible for a discount (based on pre-set criteria), and even if the chosen tickets are currently sold out.
+
+The festival booking system was implemented using TCP/IP sockets in Python. This means that there's a client and a server, where the server is used to evaluate user input and perform the necessary computations for the appropriate output, and the client is responsible for propagating curated information (from the server) to the user. The language of choice is Python, as it contains a robust sockets module which enables access to easy-to-use networking tools that can be used on any operating system and/or infrastructure. The Python sockets module also provides an intuitive interface for establishing seamless network connections between a client and server, allowing high-level network communcation.
